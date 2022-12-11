@@ -170,3 +170,22 @@ class Database:
         cur.execute(sql, values)
         conn.commit()
         return cur.lastrowid
+
+    def update_status(self, conn, user_id, note_id, status, time):
+        sql_check_status = '''SELECT
+                                  todo_status
+                              FROM
+                                  todolist
+                              WHERE
+                                  id=?
+                              AND
+                                  user_id=?
+                           '''
+        sql_update = '''UPDATE
+                            todolist(todo_status)
+                        WHERE
+                            id=?
+                        AND
+                            user_id=?
+                     '''
+        
