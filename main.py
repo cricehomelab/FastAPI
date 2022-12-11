@@ -1,5 +1,3 @@
-
-
 from fastapi import FastAPI
 from typing import Union
 from data import Database
@@ -22,6 +20,11 @@ class MakeUser(BaseModel):
 class Note(BaseModel):
     user: str
     note: str
+
+class SetNoteStatus(BaseModel):
+    user: str
+    noteid: str
+    status: str
 
 #GET functions
 # Easiest call to make to Ensure the API can be hit.
@@ -86,3 +89,8 @@ async def add_note(note: Note):
     time = dt.datetime.now()
     db.add_note(conn, note.user, note.note, time)
     return {"message": "true"}
+
+# Set the status of a note from what it is to something else.
+@app.put("/setstatus/")
+async def set_note_status(status: SetNoteStatus):
+    pass
