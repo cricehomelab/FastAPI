@@ -3,19 +3,22 @@ I am doing this mostly from just the Fastapi documentation and what I can google
 This is not based off of a specific tutorial.
 I want to be able perform all CRUD functions with the API.
 
-TODO list for this app.
+TODO list for this api:
 - Add items to the TODO list.                             => DONE
-- Query a list of active items in the TODO list.          => IN PROGRESS 
+- Query a list of  items in the TODO list.                => DONE
     - Currently able to query all TODO items for a user.  => DONE
     - Able to query by TODO items of a specific status    => DONE
-- Update items in the TODO list.
-    - add detail to the item. 
+- Update items in the TODO list.                          => IN PROGRESS
+    - add detail to the item.                             => IN PROGRESS
     - change the status of an item.                       => DONE
-- Create a list of recently completed items.
-- Generate a productivity report.
-- Send a reminder of items to add to report.
+- Set due dates
+    - Create reminders.
+    - Find ways to remind.
 - Need to take an attempt at security.
     - Do this last.
+
+TODO list for a front end:
+- Create a front end for the app. 
 
 Clean up items:
 - Clean up the SQL queries that have * in them to be more specific.
