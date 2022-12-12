@@ -202,7 +202,14 @@ class Database:
             print(e)
             return None
 
-    def update_status(self, conn, user, note_id, status, ):
+    def update_status(self, conn, user, note_id, status):
+        """
+        Updates the status and date modified of an item. 
+        :param conn: This is connection to the database created in create_connection()
+        :param user: This is the username. Used to find the user_id of the user for the note.
+        :param note_id: This is the note id fo the todolist table in sqlite.
+        :param status: this is the new status we want the ticket to be. 
+        """
         time = datetime.now()
         sql_check_status = '''SELECT
                                   todo_status
@@ -223,13 +230,17 @@ class Database:
                         AND
                             user_id=?
                      '''
-        
+        current_status = ""
         cur = conn.cursor()
-        user_id = self.user_id(conn, user)
-        cur.execute(sql_check_status, (note_id, user_id,))
-        current_status = cur.fetchall()
-        current_status = current_status
-        print(status)
+        try:
+            user_id = self.user_id(conn, user)
+            cur.execute(sql_check_status, (note_id, user_id,))
+            current_status = cur.fetchall()
+            current_status = current_status
+        except Error as e:
+            print(e)
+            return None
+
         if status != current_status:
             print(f"modifying old status {current_status} to {status}")
             values = (status, time, note_id, user_id)

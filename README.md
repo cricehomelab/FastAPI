@@ -9,10 +9,13 @@ TODO list for this app.
     - Currently able to query all TODO items for a user.  => DONE
     - Able to query by TODO items of a specific status    => DONE
 - Update items in the TODO list.
-    - add detail to the item
-    - mark an item complete
+    - add detail to the item. 
+    - change the status of an item.                       => DONE
 - Create a list of recently completed items.
 - Generate a productivity report.
 - Send a reminder of items to add to report.
 - Need to take an attempt at security.
     - Do this last.
+
+Clean up items:
+- Clean up the SQL queries that have * in them to be more specific.
