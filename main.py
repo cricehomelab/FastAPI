@@ -23,8 +23,8 @@ class Note(BaseModel):
 
 class SetNoteStatus(BaseModel):
     user: str
-    noteid: str
-    status: str
+    noteid: int
+    update: str
 
 #GET functions
 # Easiest call to make to Ensure the API can be hit.
@@ -93,4 +93,5 @@ async def add_note(note: Note):
 # Set the status of a note from what it is to something else.
 @app.put("/setstatus/")
 async def set_note_status(status: SetNoteStatus):
-    pass
+    update = db.update_status(conn, status.user, status.noteid, status.update)
+    return {"message": update}

@@ -84,14 +84,17 @@ class Database:
         :param user: This is the user name of a user that we are checking for.
         :return: This will return None unless a user is found then it will return the username. 
         """
-        cur = conn.cursor()
-        cur.execute("SELECT name from users WHERE name=?", (user,))
-        rows = cur.fetchall()
-        #print(rows)
-        if len(rows) == 0:
+        try:
+            cur = conn.cursor()
+            cur.execute("SELECT name from users WHERE name=?", (user,))
+            rows = cur.fetchall()
+            if len(rows) == 0:
+                return None
+            else:
+                return rows[0][0]
+        except Error as e:
+            print(e)
             return None
-        else:
-            return rows[0][0]
 
     def user_id(self, conn, user):
         """
@@ -100,10 +103,14 @@ class Database:
         :param user: This is the username of the user we need the ID for. 
         :return: integer value of the user id. 
         """
-        cur = conn.cursor()
-        cur.execute("SELECT * from users WHERE name=?", (user,))
-        rows = cur.fetchall()
-        return rows[0][0]
+        try:
+            cur = conn.cursor()
+            cur.execute("SELECT * from users WHERE name=?", (user,))
+            rows = cur.fetchall()
+            return rows[0][0]
+        except Error as e:
+            print(e)
+            return None
 
     def get_notes(self, conn, user):
         """
@@ -126,18 +133,34 @@ class Database:
                  WHERE 
                     user_id=?
               """
-        cur = conn.cursor()
-        user_id = self.user_id(conn, user)
-        cur.execute(sql, (user_id,))
-        rows = cur.fetchall()
-        return rows
+        try:
+            cur = conn.cursor()
+            user_id = self.user_id(conn, user)
+            cur.execute(sql, (user_id,))
+            rows = cur.fetchall()
+            return rows
+        except Error as e:
+            print(e)
+            return None
 
     def get_notes_by_status(self, conn, user, status):
+        """
+        gets a list of notes of a set user at a set status.
+        :param conn: This is connection to the database created in create_connection()
+        :param user: This is the username of a user. 
+        :param status: This is the status we want to query for. 
+        :returns: list of notes with a status. 
+        """
         cur = conn.cursor()
         user_id = self.user_id(conn, user)
-        cur.execute("SELECT * from todolist WHERE user_id=? AND todo_status=?", (user_id, status,))
-        rows = cur.fetchall()
-        return rows
+        # TODO: refine the * query to be exactly what I want. 
+        try:
+            cur.execute("SELECT * from todolist WHERE user_id=? AND todo_status=?", (user_id, status,))
+            rows = cur.fetchall()
+            return rows
+        except Error as e:
+            print(e)
+            return None
 
     def add_user(self, conn, user, time):
         """
@@ -148,11 +171,15 @@ class Database:
         """
         sql = """INSERT INTO users(name, create_date)
                  VALUES(?,?)"""
-        values = (user, time)
-        cur = conn.cursor()
-        cur.execute(sql, values)
-        conn.commit()
-        return cur.lastrowid
+        try:
+            values = (user, time)
+            cur = conn.cursor()
+            cur.execute(sql, values)
+            conn.commit()
+            return cur.lastrowid
+        except Error as e:
+            print(e)
+            return None
 
     def add_note(self, conn, user, note, time):
         """
@@ -166,12 +193,17 @@ class Database:
                  VALUES(?,?,?,?,?)"""
         user_id = self.user_id(conn, user)
         values = (user_id, note, "New", time, time)
-        cur = conn.cursor()
-        cur.execute(sql, values)
-        conn.commit()
-        return cur.lastrowid
+        try:
+            cur = conn.cursor()
+            cur.execute(sql, values)
+            conn.commit()
+            return cur.lastrowid
+        except Error as e:
+            print(e)
+            return None
 
-    def update_status(self, conn, user_id, note_id, status, time):
+    def update_status(self, conn, user, note_id, status, ):
+        time = datetime.now()
         sql_check_status = '''SELECT
                                   todo_status
                               FROM
@@ -182,10 +214,38 @@ class Database:
                                   user_id=?
                            '''
         sql_update = '''UPDATE
-                            todolist(todo_status)
+                            todolist
+                        SET
+                            todo_status=?,
+                            date_modified=?
                         WHERE
                             id=?
                         AND
                             user_id=?
                      '''
         
+        cur = conn.cursor()
+        user_id = self.user_id(conn, user)
+        cur.execute(sql_check_status, (note_id, user_id,))
+        current_status = cur.fetchall()
+        current_status = current_status
+        print(status)
+        if status != current_status:
+            print(f"modifying old status {current_status} to {status}")
+            values = (status, time, note_id, user_id)
+            try:
+                cur.execute(sql_update, values)
+                conn.commit()
+            except Error as e:
+                print(e)
+                return None
+            try:
+                cur.execute(sql_check_status, (note_id, user_id,))
+                current_status = cur.fetchall()            
+                return current_status
+            except Error as e:
+                print(e)
+                return None
+        else:
+            print("not Modifying")
+            return "No change"
