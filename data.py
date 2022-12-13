@@ -17,7 +17,7 @@ todo_note      => text: the details of the TODO event
 todo_staus     => text: status of the event (TODO, In Progress, complete)
 date_added     => text: date the TODO was added
 date_modified  => text: last modification to TODO
-date_completed => text: date to appear when completed. 
+date_completed => text: date to appear when completed.
  
 """
 
@@ -82,7 +82,7 @@ class Database:
         Checks to see if a user exists.
         :param conn: This is connection to the database created in create_connection()
         :param user: This is the user name of a user that we are checking for.
-        :return: This will return None unless a user is found then it will return the username. 
+        :return: This will return None unless a user is found then it will return the username.
         """
         try:
             cur = conn.cursor()
@@ -98,10 +98,10 @@ class Database:
 
     def user_id(self, conn, user):
         """
-        Finds the user_id (integer) of a user based upon their username. 
+        Finds the user_id (integer) of a user based upon their username.
         :param conn: This is connection to the database created in create_connection()
-        :param user: This is the username of the user we need the ID for. 
-        :return: integer value of the user id. 
+        :param user: This is the username of the user we need the ID for.
+        :return: integer value of the user id.
         """
         try:
             cur = conn.cursor()
@@ -116,8 +116,8 @@ class Database:
         """
         Queries the DB and returns the TODO entries of a user.
         :param conn: This is connection to the database created in create_connection()
-        :param user: This is the username. 
-        :return: TODO items of the user. 
+        :param user: This is the username.
+        :return: TODO items of the user.
         """
         old_sql = "SELECT * from todolist WHERE user_id=?"
         sql = """SELECT
@@ -129,8 +129,8 @@ class Database:
                     date_modified,
                     date_completed
                  FROM 
-                    todolist 
-                 WHERE 
+                    todolist
+                 WHERE
                     user_id=?
               """
         try:
@@ -252,11 +252,12 @@ class Database:
                 return None
             try:
                 cur.execute(sql_check_status, (note_id, user_id,))
-                current_status = cur.fetchall()            
+                current_status = cur.fetchall()
                 return current_status
             except Error as e:
                 print(e)
                 return None
         else:
             print("not Modifying")
-            return "No change"
+            return f"current status: {current_status} is same as new status {status}."
+        
