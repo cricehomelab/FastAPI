@@ -22,3 +22,6 @@ TODO list for a front end:
 
 Clean up items:
 - Clean up the SQL queries that have * in them to be more specific.
+
+2022/12/13 
+Considering making a front end of some sort. 
