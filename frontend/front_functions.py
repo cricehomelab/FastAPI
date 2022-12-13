@@ -5,7 +5,12 @@ class ApiCalls:
         self.api_base_address = "http://localhost:8000/"
 
 
-    def hello_world(self):
-        response = requests.get(self.api_base_address)
-        print(response.text)
-        
+    def get_hello_world(self):
+        call = self.api_base_address
+        response = requests.get(call)
+        return response.text
+
+    def get_user(self, user):
+        call = f"{self.api_base_address}getuser/{user}"
+        response = requests.get(call)
+        return response.text

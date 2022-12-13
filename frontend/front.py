@@ -2,5 +2,7 @@ from front_functions import ApiCalls
 
 api = ApiCalls()
 
-api.hello_world()
+print(api.get_hello_world())
+print(api.get_user("Charlie"))
+print(api.get_user("Renee"))
 
