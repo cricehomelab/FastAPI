@@ -8,14 +8,15 @@ TODO list for this api:
 - Query a list of  items in the TODO list.                => DONE
     - Currently able to query all TODO items for a user.  => DONE
     - Able to query by TODO items of a specific status    => DONE
-- Update items in the TODO list.                          => IN PROGRESS
-    - add detail to the item.                             => IN PROGRESS
+- Update items in the TODO list.                          => HOLD
+    - add detail to the item.                             => HOLD
     - change the status of an item.                       => DONE
-- Set due dates
-    - Create reminders.
-    - Find ways to remind.
-- Need to take an attempt at security.
-    - Do this last.
+- Set due dates                                           
+    - Create reminders.                                   
+    - Find ways to remind.                                
+- Need to take an attempt at security.                    
+    - Do this last.                                       
+- Create a rough front end for testing                    => IN PROGRESS
 
 TODO list for a front end:
 - Create a front end for the app. 
@@ -23,5 +24,5 @@ TODO list for a front end:
 Clean up items:
 - Clean up the SQL queries that have * in them to be more specific.
 
-2022/12/13 
-Considering making a front end of some sort. 
+2022/12/13 => High Priority
+Need to make some sort of a rough interface for making API calls and better testing. Currently using the interactive docs that come with the application is great but I'd like to get an idea about how I would use them in a more practical sense.
