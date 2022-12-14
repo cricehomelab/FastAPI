@@ -16,10 +16,14 @@ TODO list for this api:
     - Find ways to remind.                                
 - Need to take an attempt at security.                    
     - Do this last.                                       
-- Create a rough front end for testing                    => IN PROGRESS
+
 
 TODO list for a front end:
-- Create a front end for the app. 
+- Create a rough front end for testing                    => IN PROGRESS
+    - class that can make API calls current functions.    => IN PROGRESS
+    - segmenting classes by call type.                    => IN PROGRESS
+    - Create an interface to be able to run easily.       
+
 
 Clean up items:
 - Clean up the SQL queries that have * in them to be more specific.

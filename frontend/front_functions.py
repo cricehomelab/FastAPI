@@ -1,6 +1,6 @@
 import requests
 
-class ApiCalls:
+class GetApiCalls:
     def __init__(self) -> None:
         self.api_base_address = "http://localhost:8000/"
 
@@ -13,3 +13,17 @@ class ApiCalls:
         call = f"{self.api_base_address}getuser/{user}"
         response = requests.get(call)
         return response.text
+    
+    def get_notes(self, user):
+        call = f"{self.api_base_address}getnotes/{user}/"
+        response = requests.get(call)
+        return response.text
+    
+    def get_notes_by_status(self, user, status):
+        call = f"{self.api_base_address}gettodo/{user}/{status}"
+        response = requests.get(call)
+        return response.text
+
+class PutApiCalls:
+    def __init__(self) -> None:
+        pass
