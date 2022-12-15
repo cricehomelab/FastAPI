@@ -78,7 +78,7 @@ async def create_user(user: MakeUser):
     if check_for_user == None:
         db.add_user(conn, user.name.lower(), dt.datetime.now())
         check_for_user = db.user_exists(conn, user.name)
-        return {"response" : db.user_exists(conn, user.name)}
+        return {"response" : f"{db.user_exists(conn, user.name)} has been created."}
     else:
         return{"response": f"{check_for_user} exists already. User not added."}
 
