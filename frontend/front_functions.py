@@ -38,6 +38,23 @@ class PutApiCalls:
         call = f"{self.api_base_address}createuser"
         params = {"name": user}
         params_json = json.dumps(params)
-        print(params)
+        # print(params)
         response = requests.put(call, data=params_json)
         return response.text
+    
+    def put_add_todo(self, user, todo):
+        call = f"{self.api_base_address}addtodo"
+        params = {"user": user, "note": todo}
+        params_json = json.dumps(params)
+        # print(f"data being used in call: {params_json}")
+        response = requests.put(call, data=params_json)
+        return response.text
+
+    def put_change_note_status(self, user, noteid, update):
+        call = f"{self.api_base_address}setstatus"
+        params = {"user": user,"noteid": noteid,"update": update}
+        params_json = json.dumps(params)
+        response = requests.put(call, data=params_json)
+        return response.text
+
+    
