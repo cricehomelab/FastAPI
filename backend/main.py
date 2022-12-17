@@ -9,10 +9,14 @@ app = FastAPI()
 
 # Database creation
 db = Database()
-conn = db.create_connection(db.database_file)
-for table in db.tables:
-    db.create_table(conn, table)
 
+def create_connections():
+    conn = db.create_connection(db.database_file)
+    for table in db.tables:
+        db.create_table(conn, table)
+    return conn
+
+conn = create_connections()
 
 class MakeUser(BaseModel):
     name: str
@@ -95,3 +99,6 @@ async def add_note(note: Note):
 async def set_note_status(status: SetNoteStatus):
     update = db.update_status(conn, status.user, status.noteid, status.update)
     return {"message": update}
+
+
+

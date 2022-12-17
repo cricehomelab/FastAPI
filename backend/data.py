@@ -76,7 +76,7 @@ class Database:
             c.execute(table)
         except Error as e:
             print(e)
-    
+
     def user_exists(self, conn, user):
         """
         Checks to see if a user exists.

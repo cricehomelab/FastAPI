@@ -31,3 +31,6 @@ Clean up items:
 
 2022/12/13 => High Priority
 Need to make some sort of a rough interface for making API calls and better testing. Currently using the interactive docs that come with the application is great but I'd like to get an idea about how I would use them in a more practical sense.
+
+2022/12/17 => Notes
+I've mostly addressed my note from 12/13 I have a rough, way to make API calls so I can see what i need to put into data. I don't have a proper front end (website or something). Will need to spend some time on that at some point. 
