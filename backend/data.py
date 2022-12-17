@@ -15,6 +15,7 @@ user_id        => int: foriegn key references id from user table
 todo_number    => int: item number of TODO item
 todo_note      => text: the details of the TODO event
 todo_staus     => text: status of the event (TODO, In Progress, complete)
+todo_duedate   => text: duedate of TODO item
 date_added     => text: date the TODO was added
 date_modified  => text: last modification to TODO
 date_completed => text: date to appear when completed.
@@ -43,6 +44,7 @@ class Database:
                                 todo_number integer,
                                 todo_note text NOT NULL,
                                 todo_status text NOT NULL,
+                                todo_duedate text NOT NULL,
                                 date_added text NOT NULL,
                                 date_modified text,
                                 date_completed text,
@@ -119,12 +121,12 @@ class Database:
         :param user: This is the username.
         :return: TODO items of the user.
         """
-        old_sql = "SELECT * from todolist WHERE user_id=?"
         sql = """SELECT
                     id,
                     user_id,
                     todo_note,
                     todo_status,
+                    todo_duedate,
                     date_added,
                     date_modified,
                     date_completed
@@ -154,8 +156,25 @@ class Database:
         cur = conn.cursor()
         user_id = self.user_id(conn, user)
         # TODO: refine the * query to be exactly what I want. 
+        old_sql = "SELECT * from todolist WHERE user_id=? AND todo_status=?"
+        sql = """ SELECT 
+                     id,
+                     user_id,
+                     todo_note,
+                     todo_status,
+                     todo_duedate,
+                     date_added,
+                     date_modified,
+                     date_completed
+                  FROM
+                     todolist
+                  WHERE
+                     userid=?
+                  AND
+                     todostatus=?
+              """
         try:
-            cur.execute("SELECT * from todolist WHERE user_id=? AND todo_status=?", (user_id, status,))
+            cur.execute(sql, (user_id, status,))
             rows = cur.fetchall()
             return rows
         except Error as e:
@@ -181,7 +200,7 @@ class Database:
             print(e)
             return None
 
-    def add_note(self, conn, user, note, time):
+    def add_note(self, conn, user, note, time, duedate):
         """
         Adds a TODO note to the todolist table
         :param conn: This is connection to the database created in create_connection()
@@ -189,10 +208,17 @@ class Database:
         :param note: This is the note the user is making.
         :param time: This is the datetime to track when it was created. 
         """
-        sql = """INSERT INTO todolist(user_id, todo_note, todo_status, date_added, date_modified)
-                 VALUES(?,?,?,?,?)"""
+        sql = """INSERT INTO 
+                    todolist(
+                        user_id, 
+                        todo_note, 
+                        todo_status, 
+                        todo_duedate, 
+                        date_added, 
+                        date_modified)
+                 VALUES(?,?,?,?,?,?)"""
         user_id = self.user_id(conn, user)
-        values = (user_id, note, "New", time, time)
+        values = (user_id, note, "New", duedate, time, time)
         try:
             cur = conn.cursor()
             cur.execute(sql, values)

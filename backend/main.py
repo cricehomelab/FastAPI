@@ -2,7 +2,9 @@ from fastapi import FastAPI
 from typing import Union
 from data import Database
 from pydantic import BaseModel
-import datetime as dt
+from datetime import datetime as dt
+from datetime import timedelta as td
+
 
 # API object.
 app = FastAPI()
@@ -43,9 +45,9 @@ async def get_user(user_id: str):
     check_for_user = db.user_exists(conn, user_id)
     # The user_exists() function will return None if a user is not found. 
     if check_for_user == None:
-        return {"message": f"User {user_id} not found. Instead got {check_for_user}. "}
+        return {"message": False}
     else:
-        return {"message": f"{check_for_user} exists."}
+        return {"message": True}
 
 # returns notes for a user if they are present. This pulls ALL notes. 
 @app.get("/getnotes/{user_id}/")
@@ -80,7 +82,7 @@ async def create_user(user: MakeUser):
     check_for_user = db.user_exists(conn, user.name)
     # The user_exists() function will return None if a user is not found.
     if check_for_user == None:
-        db.add_user(conn, user.name.lower(), dt.datetime.now())
+        db.add_user(conn, user.name.lower(), dt.now())
         check_for_user = db.user_exists(conn, user.name)
         return {"response" : f"{db.user_exists(conn, user.name)} has been created."}
     else:
@@ -90,9 +92,14 @@ async def create_user(user: MakeUser):
 @app.put("/addtodo/")
 async def add_note(note: Note):
     note.user = note.user.lower()
-    time = dt.datetime.now()
-    db.add_note(conn, note.user, note.note, time)
-    return {"message": "true"}
+    time = dt.now()
+    delta = td(days=4)
+    due_date = time + delta
+    try:
+        db.add_note(conn, note.user, note.note, time, due_date)
+        return {"message": "true"}
+    except:
+        return {"message": "failed to add note."}
 
 # Set the status of a note from what it is to something else.
 @app.put("/setstatus/")
