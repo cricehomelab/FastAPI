@@ -19,14 +19,15 @@ TODO list for this api:
 
 
 TODO list for a front end:
-- Create a rough front end for testing                    => IN PROGRESS
-    - class that can make API calls current functions.    => IN PROGRESS
-    - segmenting classes by call type.                    => IN PROGRESS
+- Create a rough front end for testing                    => DONE (FOR NOW)
+    - class that can make API calls current functions.    => DONE
+    - segmenting classes by call type.                    => DONE 
     - Create an interface to be able to run easily.       
 
 
 Clean up items:
 - Clean up the SQL queries that have * in them to be more specific.
+- Need to be better about what we return in calls. 
 
 2022/12/13 => High Priority
 Need to make some sort of a rough interface for making API calls and better testing. Currently using the interactive docs that come with the application is great but I'd like to get an idea about how I would use them in a more practical sense.
