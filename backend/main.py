@@ -97,7 +97,7 @@ async def add_note(note: Note):
     due_date = time + delta
     try:
         db.add_note(conn, note.user, note.note, time, due_date)
-        return {"message": "true"}
+        return {"user": note.user, "todo": note.note, "duedate": due_date}
     except:
         return {"message": "failed to add note."}
 

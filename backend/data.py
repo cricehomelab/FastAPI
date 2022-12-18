@@ -169,9 +169,9 @@ class Database:
                   FROM
                      todolist
                   WHERE
-                     userid=?
+                     user_id=?
                   AND
-                     todostatus=?
+                     todo_status=?
               """
         try:
             cur.execute(sql, (user_id, status,))
